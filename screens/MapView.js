@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
+import GetMyLocation from "../components/Location";
 
 export default class MapperScreen extends React.Component {
   state = {
