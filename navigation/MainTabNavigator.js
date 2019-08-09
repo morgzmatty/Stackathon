@@ -94,9 +94,9 @@ SettingsStack.path = "";
 
 const tabNavigator = createBottomTabNavigator({
   HomeStack,
+  MapperStack,
   LinksStack,
-  SettingsStack,
-  MapperStack
+  SettingsStack
 });
 
 tabNavigator.path = "";

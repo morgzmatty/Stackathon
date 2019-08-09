@@ -9,7 +9,6 @@ import {
   TouchableOpacity,
   View
 } from "react-native";
-import GetMyLocation from "../components/Location";
 
 import { MonoText } from "../components/StyledText";
 
@@ -35,7 +34,6 @@ export default function HomeScreen() {
           <DevelopmentModeNotice />
 
           <Text style={styles.getStartedText}>HELLO SHARON</Text>
-          <GetMyLocation />
 
           <View
             style={[styles.codeHighlightContainer, styles.homeScreenFilename]}
