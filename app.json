@@ -18,10 +18,7 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true,
-      "config": {
-        "googleMapsApiKey": "AIzaSyDypeUWc6LDA7o0mxzlWvVe7Kllqaz7Xo4"
-      }
+      "supportsTablet": true
     }
   }
 }

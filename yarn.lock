@@ -2802,6 +2802,13 @@ expo-font@~6.0.0, expo-font@~6.0.1:
   dependencies:
     fontfaceobserver "^2.1.0"
 
+expo-google-sign-in@~6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/expo-google-sign-in/-/expo-google-sign-in-6.0.0.tgz#ff5c521a046dbdbd24a628e5d09db25fb7bd59bf"
+  integrity sha512-wWiiuRyMYbMy1LdHeUsyu2XAtyKbGB2gek9xUIMQJMklfmOO+wm8KshQipx4ZnYcQVVm2iN0bQCigASlewBdDw==
+  dependencies:
+    invariant "^2.2.4"
+
 expo-keep-awake@~6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/expo-keep-awake/-/expo-keep-awake-6.0.0.tgz#e0d6d1263c6a73488272a62aef98312ab25cab1f"
@@ -3126,7 +3133,7 @@ find-up@^3.0.0:
   dependencies:
     locate-path "^3.0.0"
 
-firebase@^6.3.4:
+firebase@^6.3.5:
   version "6.3.5"
   resolved "https://registry.yarnpkg.com/firebase/-/firebase-6.3.5.tgz#ba7a47f5300e89cdfaaa6af8af298fe4053c6c2f"
   integrity sha512-6tDNro9jO/NM2ofWc/2dZf0L7dcNOl6dhImn3jDZAGFTLmT4dxBm+FcWOzQCoM1+GZxpYZGURGAvwCMAgBvtTQ==
