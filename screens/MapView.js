@@ -7,7 +7,7 @@ import {
   StatusBarIOS,
   Dimensions
 } from "react-native";
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Marker, Polyline } from "react-native-maps";
 import Constants from "expo-constants";
 import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
@@ -31,25 +31,6 @@ export default class MapperScreen extends Component {
 
   componentDidMount() {
     this._getLocationAsync();
-
-    navigator.geolocation.getCurrentPosition(
-      position => {},
-      error => alert(error.message),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-    );
-    this.watchID = navigator.geolocation.watchPosition(position => {
-      const { routeCoordinates, distanceTravelled } = this.state;
-      const newLatLngs = {
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude
-      };
-      const positionLatLngs = pick(position.coords, ["latitude", "longitude"]);
-      this.setState({
-        routeCoordinates: routeCoordinates.concat(positionLatLngs),
-        distanceTravelled: distanceTravelled + this.calcDistance(newLatLngs),
-        prevLatLng: newLatLngs
-      });
-    });
   }
 
   componentWillUnmount() {
@@ -72,6 +53,21 @@ export default class MapperScreen extends Component {
 
     let location = await Location.getCurrentPositionAsync({});
     this.setState({ locationResult: JSON.stringify(location) });
+
+    this.watchID = navigator.geolocation.watchPosition(position => {
+      const { routeCoordinates, distanceTravelled } = this.state;
+      const newLatLngs = {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude
+      };
+      const positionLatLngs = pick(position.coords, ["latitude", "longitude"]);
+      console.log(routeCoordinates);
+      this.setState({
+        routeCoordinates: routeCoordinates.concat(positionLatLngs),
+        distanceTravelled: distanceTravelled + this.calcDistance(newLatLngs),
+        prevLatLng: newLatLngs
+      });
+    });
 
     //Center the map on the location we just fetched.
     this.setState({
@@ -101,28 +97,19 @@ export default class MapperScreen extends Component {
         ) : (
           <MapView
             style={styles.map}
-            region={this.state.mapRegion}
-            // onRegionChange={this._handleMapRegionChange}
+            initialRegion={this.state.mapRegion}
             provider={MapView.PROVIDER_GOOGLE}
             showsUserLocation={true}
             followsUserLocation={true}
             showsMyLocationButton={true}
-            overlays={[
-              {
-                coordinates: this.state.routeCoordinates,
-                strokeColor: "#19B5FE",
-                lineWidth: 10
-              }
-            ]}
           >
-            {/* <Marker coordinate={this.state.mapRegion}>
-              <Image
-                source={require("../assets/images/runner-icon.png")}
-                style={{ width: 40, height: 40 }}
-              />
-            </Marker> */}
-            <Text style={styles.bottomBarHeader}>DISTANCE</Text>
-            <Text style={styles.bottomBarContent}>
+            <Polyline
+              coordinates={this.state.routeCoordinates}
+              strokeColor="#19B5FE"
+              strokeWidth={6}
+            />
+            <Text>DISTANCE</Text>
+            <Text>
               {parseFloat(this.state.distanceTravelled).toFixed(2)} km
             </Text>
           </MapView>

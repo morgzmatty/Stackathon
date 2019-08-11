@@ -48,11 +48,11 @@ export default class LoginScreen extends React.Component {
                   .ref("/users/" + result.user.uid)
                   .set({
                     gmail: result.user.email,
-                    profile_picture: result.additionalUserInfo.profile.picture,
+                    profilePicture: result.additionalUserInfo.profile.picture,
                     locale: result.additionalUserInfo.profile.locale,
-                    first_name: result.additionalUserInfo.profile.given_name,
-                    last_name: result.additionalUserInfo.profile.family_name,
-                    created_at: Date.now()
+                    firstName: result.additionalUserInfo.profile.given_name,
+                    lastName: result.additionalUserInfo.profile.family_name,
+                    createdAt: Date.now()
                   })
                   .then(function(snapshot) {
                     //console.log()

@@ -39,4 +39,22 @@ export class FirebaseWrapper {
       console.log("something went wrong creating a new document:", error);
     }
   }
+
+  async SetupCollectionListener(collectionPath, callback) {
+    try {
+      console.log("calling SetupCollectionListener");
+      await this._firestore
+        .collection(collectionPath)
+        .orderBy("createdAt", "desc")
+        .onSnapshot(querySnapshot => {
+          let container = [];
+          querySnapshot.forEach(doc => {
+            container.push(doc.data());
+          });
+          return callback(container);
+        });
+    } catch (error) {
+      console.log("error collecting", error);
+    }
+  }
 }
