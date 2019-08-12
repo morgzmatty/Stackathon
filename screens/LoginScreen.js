@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
+import { View, Text, StyleSheet, Button, Image } from "react-native";
 import Expo from "expo";
 import firebase from "firebase";
 import * as Google from "expo-google-app-auth";
@@ -53,9 +53,6 @@ export default class LoginScreen extends React.Component {
                     firstName: result.additionalUserInfo.profile.given_name,
                     lastName: result.additionalUserInfo.profile.family_name,
                     createdAt: Date.now()
-                  })
-                  .then(function(snapshot) {
-                    //console.log()
                   });
               } else {
                 firebase
@@ -66,13 +63,13 @@ export default class LoginScreen extends React.Component {
             })
             .catch(function(error) {
               // Handle Errors here.
-              var errorCode = error.code;
-              var errorMessage = error.message;
+              let errorCode = error.code;
+              let errorMessage = error.message;
               // The email of the user's account used.
-              var email = error.email;
+              let email = error.email;
               // The firebase.auth.AuthCredential type that was used.
-              var credential = error.credential;
-              // ...
+              let credential = error.credential;
+              console.log(errorCode, errorMessage, email, credential);
             });
         } else {
           console.log("User already signed-in Firebase.");
@@ -103,6 +100,13 @@ export default class LoginScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        <Text>NOT ANOTHER RUNNING APP</Text>
+        <View style={styles.welcomeContainer}>
+          <Image
+            source={require("../assets/images/RonnieRunningApp.png")}
+            style={{ width: 300, height: 300 }}
+          />
+        </View>
         <Button
           title="Sign In With Google"
           onPress={() => this.signInWithGoogleAsync()}
@@ -116,6 +120,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
+    justifyContent: "center"
+  },
+  welcomeContainer: {
     justifyContent: "center"
   }
 });
