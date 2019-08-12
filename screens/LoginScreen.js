@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
+import { View, Text, StyleSheet, Button, Image } from "react-native";
 import Expo from "expo";
 import firebase from "firebase";
 import * as Google from "expo-google-app-auth";
@@ -103,6 +103,13 @@ export default class LoginScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        <Text>NOT ANOTHER RUNNING APP</Text>
+        <View style={styles.welcomeContainer}>
+          <Image
+            source={require("../assets/images/RonnieRunningApp.png")}
+            style={{ width: 300, height: 300 }}
+          />
+        </View>
         <Button
           title="Sign In With Google"
           onPress={() => this.signInWithGoogleAsync()}
@@ -116,6 +123,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
+    justifyContent: "center"
+  },
+  welcomeContainer: {
     justifyContent: "center"
   }
 });

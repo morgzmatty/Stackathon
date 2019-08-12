@@ -18,7 +18,12 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "APP would like to access your current location to determine",
+        "NSLocationAlwaysUsageDescription": "App would like to access your current location",
+        "NSCameraUsageDescription": "App would like to access your Camera"
+      }
     }
   }
 }
