@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 // import React, { Component } from "react";
 // import {
 //   Text,
@@ -157,7 +158,8 @@ export default class MapperScreen extends Component {
       hasLocationPermissions: false,
       routeCoordinates: [],
       distanceTravelled: 0,
-      prevLatLng: {}
+      prevLatLng: {},
+      lineColors: []
     };
   }
 
@@ -171,6 +173,25 @@ export default class MapperScreen extends Component {
 
   _handleMapRegionChange = mapRegion => {
     this.setState({ mapRegion });
+  };
+
+  _setStrokeColorOnSpeed = distance => {
+    let speed = distance * 20;
+    if (speed >= 0 && speed <= 3.63) {
+      return "#FF4633";
+    } else if (speed > 3.63 && speed <= 4.866) {
+      return "#FF9C33";
+    } else if (speed > 6.37 && speed <= 7.152) {
+      return "#FFFC33";
+    } else if (speed > 7.152 && speed <= 10.06) {
+      return "#4CFF33";
+    } else if (speed > 10.06 && speed <= 13.888) {
+      return "#335BFF";
+    } else if (speed > 13.888) {
+      return "#D733FF";
+    } else {
+      return "#000000";
+    }
   };
 
   _getLocationAsync = async () => {
@@ -196,18 +217,22 @@ export default class MapperScreen extends Component {
     });
     //listen to location
     Location.watchPositionAsync(GEOLOCATION_OPTIONS, newLocation => {
-      const { routeCoordinates, distanceTravelled } = this.state;
+      const { routeCoordinates, distanceTravelled, lineColors } = this.state;
       const { coords } = newLocation;
       const newLatLngs = {
         latitude: coords.latitude,
         longitude: coords.longitude
       };
       const positionLatLngs = pick(coords, ["latitude", "longitude"]);
-      console.log(routeCoordinates);
+      console.log("linecolors", lineColors.length);
+      console.log("routeCoords", routeCoordinates.length);
       this.setState({
         routeCoordinates: routeCoordinates.concat(positionLatLngs),
         distanceTravelled: distanceTravelled + this.calcDistance(newLatLngs),
-        prevLatLng: newLatLngs
+        prevLatLng: newLatLngs,
+        lineColors: lineColors.concat(
+          this._setStrokeColorOnSpeed(distanceTravelled)
+        )
       });
     });
   };
@@ -222,7 +247,8 @@ export default class MapperScreen extends Component {
       hasLocationPermissions,
       mapRegion,
       routeCoordinates,
-      distanceTravelled
+      distanceTravelled,
+      lineColors
     } = this.state;
     return (
       <View style={styles.container}>
@@ -243,11 +269,14 @@ export default class MapperScreen extends Component {
           >
             <Polyline
               coordinates={routeCoordinates}
-              strokeColor="#19B5FE"
               strokeWidth={6}
+              strokeColors={lineColors}
+              strokeColor="#19B5FE"
             />
-            <Text>DISTANCE</Text>
-            <Text>{parseFloat(distanceTravelled).toFixed(2)} km</Text>
+            <View style={styles.distance}>
+              <Text>Distance Traveled:</Text>
+              <Text>{parseFloat(distanceTravelled).toFixed(2)} km</Text>
+            </View>
           </MapView>
         )}
       </View>
@@ -269,5 +298,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     color: "#34495e"
+  },
+  distance: {
+    flex: 1,
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    flexDirection: "row",
+    marginBottom: 600,
+    backgroundColor: "#a832a8"
   }
 });
