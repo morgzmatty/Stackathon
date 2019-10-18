@@ -224,8 +224,8 @@ export default class MapperScreen extends Component {
         longitude: coords.longitude
       };
       const positionLatLngs = pick(coords, ["latitude", "longitude"]);
-      console.log("linecolors", lineColors.length);
-      console.log("routeCoords", routeCoordinates.length);
+      console.log("linecolors", lineColors);
+      //console.log("routeCoords", routeCoordinates.length);
       this.setState({
         routeCoordinates: routeCoordinates.concat(positionLatLngs),
         distanceTravelled: distanceTravelled + this.calcDistance(newLatLngs),
@@ -262,7 +262,7 @@ export default class MapperScreen extends Component {
           <MapView
             style={styles.map}
             initialRegion={mapRegion}
-            provider={MapView.PROVIDER_GOOGLE}
+            // provider={MapView.PROVIDER_GOOGLE}
             showsMyLocationButton={true}
             showsUserLocation={true}
             followsUserLocation={true}
