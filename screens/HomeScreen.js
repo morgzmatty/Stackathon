@@ -35,7 +35,7 @@ export default function HomeScreen() {
 
       <View style={styles.tabBarInfoContainer}>
         <Text style={styles.tabBarInfoText}>
-          Click on the map tab and begin running!
+          Click on the map tab and start running!
         </Text>
       </View>
     </View>

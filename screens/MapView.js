@@ -146,7 +146,6 @@ import haversine from "haversine";
 
 const GEOLOCATION_OPTIONS = {
   accuracy: Location.Accuracy.BestForNavigation,
-  timeInterval: 50,
   distanceInterval: 0.5
 };
 
@@ -176,23 +175,29 @@ export default class MapperScreen extends Component {
   };
 
   _setStrokeColorOnSpeed = distance => {
-    let speed = distance * 20;
-    if (speed >= 0 && speed <= 3.63) {
+    let speed = distance * 72000;
+    console.log("speed", speed);
+    if (speed >= 0 && speed <= 4.0) {
       return "#FF4633";
-    } else if (speed > 3.63 && speed <= 4.866) {
+    } else if (speed > 4.0 && speed <= 8.0) {
       return "#FF9C33";
-    } else if (speed > 6.37 && speed <= 7.152) {
+    } else if (speed > 8.0 && speed <= 12.0) {
       return "#FFFC33";
-    } else if (speed > 7.152 && speed <= 10.06) {
+    } else if (speed > 12.0 && speed <= 16.0) {
       return "#4CFF33";
-    } else if (speed > 10.06 && speed <= 13.888) {
+    } else if (speed > 16.0 && speed <= 20.0) {
       return "#335BFF";
-    } else if (speed > 13.888) {
+    } else if (speed > 20.0) {
       return "#D733FF";
     } else {
       return "#000000";
     }
   };
+
+  calcDistance(newLatLng) {
+    const { prevLatLng } = this.state;
+    return haversine(prevLatLng, newLatLng) || 0;
+  }
 
   _getLocationAsync = async () => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -224,23 +229,18 @@ export default class MapperScreen extends Component {
         longitude: coords.longitude
       };
       const positionLatLngs = pick(coords, ["latitude", "longitude"]);
-      console.log("linecolors", lineColors);
+      //console.log("linecolors", lineColors);
       //console.log("routeCoords", routeCoordinates.length);
       this.setState({
         routeCoordinates: routeCoordinates.concat(positionLatLngs),
         distanceTravelled: distanceTravelled + this.calcDistance(newLatLngs),
-        prevLatLng: newLatLngs,
         lineColors: lineColors.concat(
-          this._setStrokeColorOnSpeed(distanceTravelled)
-        )
+          this._setStrokeColorOnSpeed(this.calcDistance(newLatLngs))
+        ),
+        prevLatLng: newLatLngs
       });
     });
   };
-
-  calcDistance(newLatLng) {
-    const { prevLatLng } = this.state;
-    return haversine(prevLatLng, newLatLng) || 0;
-  }
 
   render() {
     const {
@@ -276,6 +276,10 @@ export default class MapperScreen extends Component {
             <View style={styles.distance}>
               <Text>Distance Traveled:</Text>
               <Text>{parseFloat(distanceTravelled).toFixed(2)} km</Text>
+              {/* <Text>Speed:</Text>
+              <Text>
+                {parseFloat(this.calcDistance(newLatLng) * 20).toFixed(2)} km/s
+              </Text> */}
             </View>
           </MapView>
         )}
@@ -283,6 +287,10 @@ export default class MapperScreen extends Component {
     );
   }
 }
+
+MapperScreen.navigationOptions = {
+  title: "Distance Traveled"
+};
 
 const styles = StyleSheet.create({
   container: {
